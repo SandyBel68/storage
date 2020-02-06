@@ -32,18 +32,27 @@ public class BookController {
 
   private final BookRepository bookRepository;
   private final AuthorRepository authorRepository;
+  private final KafkaProducer kafkaProducer;
 
   @PostMapping(consumes = APPLICATION_JSON_VALUE)
   public Book save(@RequestBody @Validated Book book) {
     book.setId(randomUUID().toString());
     savePassedAuthors(book.getAuthors());
-    return bookRepository.save(book);
+    var savedBook = bookRepository.save(book);
+    kafkaProducer.sendMessage(savedBook);
+    return savedBook;
   }
 
   @PostMapping(value = "/batch", consumes = APPLICATION_JSON_VALUE)
   public List<Book> saveAll(@RequestBody List<Book> books) {
     books.forEach(a -> a.setId(randomUUID().toString()));
-    return bookRepository.saveAll(books);
+    books.forEach(a -> savePassedAuthors(a.getAuthors()));
+    List<Book> savedBooks = bookRepository.saveAll(books);
+    for (Book book : savedBooks
+    ) {
+      kafkaProducer.sendMessage(book);
+    }
+    return savedBooks;
   }
 
   @GetMapping
