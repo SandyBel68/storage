@@ -6,7 +6,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -31,6 +33,6 @@ public class Book implements Serializable, Identifiable {
 
   private Instant publicationDate;
 
-  private Set<Author> authors = new HashSet<>();
+  private List<Author> authors = new ArrayList<>();
 
 }

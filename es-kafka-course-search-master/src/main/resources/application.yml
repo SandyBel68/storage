@@ -6,6 +6,9 @@ spring:
 
 server.port: 10002
 
+elastic.host: localhost
+elastic.port: 9200
+
 eureka:
   instance:
     hostname: search
