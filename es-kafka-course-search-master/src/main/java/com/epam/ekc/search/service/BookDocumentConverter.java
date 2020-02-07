@@ -18,6 +18,7 @@ public class BookDocumentConverter {
         bookDocument.setLanguage(book.getLanguage());
         bookDocument.setPublicationDate(book.getPublicationDate());
         bookDocument.setTitle(book.getTitle());
+        bookDocument.setSuggest(book.getTitle());
         bookDocument.setType(book.getType());
         bookDocument.setAuthors(book.getAuthors().stream()
                 .map(author -> author.getFirstName() + " " + author.getLastName())

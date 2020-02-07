@@ -1,6 +1,5 @@
 package com.epam.ekc.search.service;
 
-
 import com.epam.ekc.search.dto.BookDocument;
 import com.epam.ekc.search.model.Book;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +24,11 @@ import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.suggest.Suggest;
+import org.elasticsearch.search.suggest.SuggestBuilder;
+import org.elasticsearch.search.suggest.SuggestBuilders;
+import org.elasticsearch.search.suggest.SuggestionBuilder;
+import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -69,6 +73,9 @@ public class ElasticService {
             "    },\n" +
             "    \"authors\": {\n" +
             "      \"type\": \"text\"\n" +
+            "    },\n" +
+            "    \"suggest\": {\n" +
+            "      \"type\": \"completion\"\n" +
             "    }\n" +
             "  }\n" +
             "}";
@@ -130,7 +137,6 @@ public class ElasticService {
         request.indices(INDEX_NAME);
         searchSourceBuilder.from(0);
         searchSourceBuilder.size(20);
-
         return retrieveResultsFromSearchResponse(client.search(request, RequestOptions.DEFAULT));
     }
 
@@ -159,7 +165,6 @@ public class ElasticService {
     private List<BookDocument> retrieveResultsFromSearchResponse(SearchResponse response) {
         List<BookDocument> books = new ArrayList<>();
         SearchHit[] hits = response.getHits().getHits();
-
         for (SearchHit hit : hits) {
             books.add(objectMapper.convertValue(hit.getSourceAsMap(), BookDocument.class));
         }
@@ -194,4 +199,34 @@ public class ElasticService {
         }
         return result;
     }
+
+    public List<String> autocompleteTitle(String start) throws IOException {
+        List<String> suggestions = new ArrayList<>();
+
+        SearchRequest request = new SearchRequest();
+        request.indices(INDEX_NAME);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        SuggestionBuilder termSuggestionBuilder =
+                SuggestBuilders.completionSuggestion("suggest").prefix(start);
+        SuggestBuilder suggestBuilder = new SuggestBuilder();
+        suggestBuilder.addSuggestion("suggest_title", termSuggestionBuilder);
+        searchSourceBuilder.suggest(suggestBuilder);
+        request.source(searchSourceBuilder);
+        return retrieveSuggestionsFromSearchResponse(client.search(request, RequestOptions.DEFAULT));
+
+    }
+
+    private List<String> retrieveSuggestionsFromSearchResponse(SearchResponse response) {
+        List<String> suggestion = new ArrayList<>();
+        Suggest suggest = response.getSuggest();
+        CompletionSuggestion termSuggestion = suggest.getSuggestion("suggest_title");
+        for (CompletionSuggestion.Entry entry : termSuggestion.getEntries()) {
+            for (CompletionSuggestion.Entry.Option option : entry) {
+                suggestion.add(option.getText().string());
+            }
+        }
+        return suggestion;
+    }
 }
+

@@ -16,6 +16,7 @@ public class BookDocument {
     private String type;
     private String genre;
     private String title;
+    private String suggest;
     private String language;
     private Instant publicationDate;
     private List<String> authors = new ArrayList<>();
