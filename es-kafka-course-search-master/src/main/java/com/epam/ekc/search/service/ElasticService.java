@@ -82,7 +82,7 @@ public class ElasticService {
 
     @PostConstruct
     public void createIndex() throws IOException {
-//        deleteIndex(INDEX_NAME);
+        deleteIndex(INDEX_NAME);
         if (!isIndexExist(INDEX_NAME)) {
             CreateIndexRequest request = new CreateIndexRequest(INDEX_NAME);
             request.mapping(INDEX_MAPPING, XContentType.JSON);
@@ -98,13 +98,6 @@ public class ElasticService {
     private void deleteIndex(String indexName) throws IOException {
         DeleteIndexRequest request = new DeleteIndexRequest(indexName);
         client.indices().delete(request, RequestOptions.DEFAULT);
-    }
-
-    private long countDocumentsInIndex(String indexName) throws IOException {
-        CountRequest countRequest = new CountRequest();
-        countRequest.indices(indexName);
-        CountResponse countResponse = client.count(countRequest, RequestOptions.DEFAULT);
-        return countResponse.getCount();
     }
 
     public void saveBookToIndex(Book book) throws IOException {

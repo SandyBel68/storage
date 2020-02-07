@@ -33,4 +33,9 @@ public class ElasticController {
     public Map<String, Long> countByField(String fieldname) throws IOException {
         return elasticService.countByAggregation(fieldname);
     }
+
+    @GetMapping(value = "/suggest")
+    public List<String> suggestTitle(String start) throws IOException {
+        return elasticService.autocompleteTitle(start);
+    }
 }
