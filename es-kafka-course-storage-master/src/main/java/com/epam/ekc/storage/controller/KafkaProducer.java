@@ -1,7 +1,5 @@
 package com.epam.ekc.storage.controller;
 
-import com.epam.ekc.storage.model.Author;
-import com.epam.ekc.storage.model.Book;
 import com.epam.ekc.storage.model.Identifiable;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
