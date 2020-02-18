@@ -1,38 +1,49 @@
 package com.epam.ekc.storage.model;
 
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
+import com.epam.ekc.storage.converters.BookDynamoConverter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
+
 import java.io.Serializable;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Document(collection = "author")
+@DynamoDBTable(tableName = "Authors")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Author implements Serializable, Identifiable {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    private String id;
+    private String firstName;
+    private String lastName;
+    @JsonIgnoreProperties("authors")
+    private Book book;
 
-  @Id
-  private String id;
+    @DynamoDBHashKey
+    public String getId() {
+        return id;
+    }
 
-  @Field("first_name")
-  private String firstName;
+    @DynamoDBAttribute
+    public String getFirstName() {
+        return firstName;
+    }
 
-  @Field("last_name")
-  private String lastName;
+    @DynamoDBAttribute
+    public String getLastName() {
+        return lastName;
+    }
 
-  @DBRef
-  @Field("book")
-  @JsonIgnoreProperties("authors")
-  private Book book;
+    @DynamoDBAttribute
+    @DynamoDBTypeConverted(converter = BookDynamoConverter.class)
+    public Book getBook() {
+        return book;
+    }
 }
+
