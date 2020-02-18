@@ -12,8 +12,6 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.core.CountRequest;
-import org.elasticsearch.client.core.CountResponse;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.xcontent.XContentType;
@@ -82,7 +80,7 @@ public class ElasticService {
 
     @PostConstruct
     public void createIndex() throws IOException {
-        deleteIndex(INDEX_NAME);
+//        deleteIndex(INDEX_NAME);
         if (!isIndexExist(INDEX_NAME)) {
             CreateIndexRequest request = new CreateIndexRequest(INDEX_NAME);
             request.mapping(INDEX_MAPPING, XContentType.JSON);

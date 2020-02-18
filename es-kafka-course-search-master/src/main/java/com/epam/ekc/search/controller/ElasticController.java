@@ -18,7 +18,6 @@ public class ElasticController {
 
     private final ElasticService elasticService;
 
-
     @GetMapping
     public List<BookDocument> findALL() throws IOException {
         return elasticService.findAll();

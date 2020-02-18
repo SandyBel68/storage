@@ -12,12 +12,11 @@ import java.io.Serializable;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Author implements Serializable, Identifiable {
 
+  private static final long serialVersionUID = 1L;
+
   private String id;
-
   private String firstName;
-
   private String lastName;
-
   @JsonIgnoreProperties("authors")
   private Book book;
 }

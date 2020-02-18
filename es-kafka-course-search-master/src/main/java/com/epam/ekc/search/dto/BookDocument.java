@@ -1,6 +1,5 @@
 package com.epam.ekc.search.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
