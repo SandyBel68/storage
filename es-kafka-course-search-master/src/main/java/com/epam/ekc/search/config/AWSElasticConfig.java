@@ -19,6 +19,12 @@ public class AWSElasticConfig {
     @Value("${elastic.port}")
     private int elasticPort;
 
+//    @Bean(destroyMethod = "close")
+//    public RestHighLevelClient client() {
+//        return new RestHighLevelClient(RestClient.builder(
+//                new HttpHost(elasticHost, elasticPort, "http")));
+//    }
+
     static final AWSCredentialsProvider credentialsProvider = new DefaultAWSCredentialsProviderChain();
 
     @Bean(destroyMethod = "close")
