@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allows outbound for all addresses and inbound from EPAM SPb network
+      VpcId: vpc-9f0196e7
+      SecurityGroupIngress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 5.188.107.104/29
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 46.229.218.0/24
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 185.44.13.32/29
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
+Outputs:
+  SecurityGroupID:
+    Description: The id of security group
+    Value: {"Fn::GetAtt": ["EC2SecurityGroup","GroupId"]}

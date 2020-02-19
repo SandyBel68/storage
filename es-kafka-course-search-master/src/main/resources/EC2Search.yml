@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: AWS CloudFormation Template thar creates EC2 instance for Confluence platform
+Parameters:
+  ImageID:
+    Description: "Image id for EC2"
+    Type: String
+    Default: "ami-079f731edfe27c29c"
+  EC2InstanceType:
+    Description: "Instance type"
+    Type: String
+    Default: "t2.micro"
+  PemKeyName:
+    Description: ".pem key for access EC2"
+    Type: String
+    Default: "Key_for_es_kafka_task_instances"
+  IAMRole:
+    Description: "IAM profile instance"
+    Type: String
+    Default: "EC2AccessToESSQSDynamo"
+  EurekaAddress:
+    Type: String
+  ElasticEndpoint:
+    Type: String
+  StorageAddress:
+    Type: String
+  SecurityGroupId:
+    Type: String
+Resources:
+  Eip:
+    Type: AWS::EC2::EIP
+  Ec2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref ImageID
+      InstanceType: !Ref EC2InstanceType
+      KeyName: !Ref PemKeyName
+      IamInstanceProfile: !Ref IAMRole
+      SecurityGroupIds:
+        - !Ref SecurityGroupId
+      Tags:
+        - Key: Name
+          Value: Search
+      UserData:
+        Fn::Base64: !Sub
+          - |
+            #!/bin/bash -x
+            sudo su
+            yum update -y
+            yum install -y docker
+            service docker start
+            export EUREKA_ADDRESS=${Eureka_Address}
+            export STORAGE_ADDRESS=${Storage_Address}
+            export ES_ADDRESS=${Es_Address}
+            docker container run --rm -p 10002:10002 sandybel68/search
+          - Eureka_Address: !Ref EurekaAddress
+            Storage_Address: !Ref StorageAddress
+            Es_Address: !Ref ElasticEndpoint
+  EipAssociation:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      EIP: !Ref Eip
+      InstanceId: !Ref Ec2

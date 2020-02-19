@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: AWS CloudFormation Template thar creates EC2 instance for Confluence platform
+Parameters:
+  ImageID:
+    Description: "Image id for EC2"
+    Type: String
+    Default: "ami-079f731edfe27c29c"
+  EC2InstanceType:
+    Description: "Instance type"
+    Type: String
+    Default: "t2.micro"
+  PemKeyName:
+    Description: ".pem key for access EC2"
+    Type: String
+    Default: "Key_for_es_kafka_task_instances"
+  IAMRole:
+    Description: "IAM profile instance"
+    Type: String
+    Default: "EC2AccessToESSQSDynamo"
+  SecurityGroupId:
+    Type: String
+Resources:
+  Eip:
+    Type: AWS::EC2::EIP
+  Ec2:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref ImageID
+      InstanceType: !Ref EC2InstanceType
+      KeyName: !Ref PemKeyName
+      IamInstanceProfile: !Ref IAMRole
+      SecurityGroupIds:
+        - !Ref SecurityGroupId
+      Tags:
+        - Key: Name
+          Value: Eureka
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo su
+          yum update -y
+          yum install -y docker
+          service docker start
+          docker container run --rm -p 8761:8761 sandybel68/discoverapp
+  EipAssociation:
+    Type: AWS::EC2::EIPAssociation
+    Properties:
+      EIP: !Ref Eip
+      InstanceId: !Ref Ec2
+Outputs:
+  EurekaAddress:
+    Description: The endpoint of EUREKA service
+    Value: {"Fn::GetAtt": ["Ec2","PublicIp"]}
