@@ -4,7 +4,7 @@ Parameters:
   DomainName:
     Description: User defined Elasticsearch Domain name
     Type: String
-    Default: "elastic-for-storage-search-apps"
+    Default: "elastic-for-course"
   ElasticsearchVersion:
     Description: User defined Elasticsearch Version
     Type: String

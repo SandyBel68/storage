@@ -51,7 +51,7 @@ Resources:
             export EUREKA_ADDRESS=${Eureka_Address}
             export STORAGE_ADDRESS=${Storage_Address}
             export ES_ADDRESS=${Es_Address}
-            docker container run --rm -p 10002:10002 sandybel68/search
+            docker container run --rm -e EUREKA_ADDRESS -e STORAGE_ADDRESS -e ES_ADDRESS -p 10002:10002 sandybel68/search:search
           - Eureka_Address: !Ref EurekaAddress
             Storage_Address: !Ref StorageAddress
             Es_Address: !Ref ElasticEndpoint

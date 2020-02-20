@@ -24,7 +24,7 @@ Resources:
     Properties:
       InstanceProfileName: "EC2AccessToESSQSDynamo"
       Roles:
-        - !Ref Role
+        - !Ref MainRole
 Outputs:
   IAMRoleArn:
     Description: The arn for IAM role

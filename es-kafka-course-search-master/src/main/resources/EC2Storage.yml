@@ -45,7 +45,7 @@ Resources:
             yum install -y docker
             service docker start
             export EUREKA_ADDRESS=${Eureka_Address}
-            docker container run --rm -p 10001:10001 sandybel68/storage
+            docker container run --rm -e EUREKA_ADDRESS -p 10001:10001 sandybel68/storage:storage
           - Eureka_Address: !Ref EurekaAddress
   EipAssociation:
     Type: AWS::EC2::EIPAssociation

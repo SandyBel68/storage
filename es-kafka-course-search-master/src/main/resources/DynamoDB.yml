@@ -15,7 +15,7 @@ Resources:
       TableName: "Books"
   AuthorsTable:
     Type: AWS::DynamoDB::Table
-    DependsOn: "BookTable"
+    DependsOn: "BooksTable"
     Properties:
       AttributeDefinitions:
         - AttributeName: "id"
