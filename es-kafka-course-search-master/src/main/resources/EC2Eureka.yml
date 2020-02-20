@@ -16,7 +16,7 @@ Parameters:
   IAMRole:
     Description: "IAM profile instance"
     Type: String
-    Default: "EC2AccessToESSQSDynamo"
+    Default: "EC2Access"
   SecurityGroupId:
     Type: String
 Resources:
@@ -47,7 +47,7 @@ Resources:
     Properties:
       EIP: !Ref Eip
       InstanceId: !Ref Ec2
-Outputs:.
+Outputs:
   EurekaAddress:
     Description: The endpoint of EUREKA service
     Value: {"Fn::GetAtt": ["Ec2","PublicIp"]}

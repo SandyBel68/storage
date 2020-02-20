@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Resources:
-  MainRole:
+  RootRole:
     Type: "AWS::IAM::Role"
     Properties:
-      RoleName: "EC2AccessToESSQSDynamo"
+      RoleName: "EC2Access"
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -15,17 +15,19 @@ Resources:
                 - "es.amazonaws.com"
             Action:
               - "sts:AssumeRole"
+      Path: "/"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/AmazonESFullAccess"
         - "arn:aws:iam::aws:policy/AmazonSQSFullAccess"
         - "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
-  MainInstanceProfile:
+  RootInstanceProfile:
     Type: "AWS::IAM::InstanceProfile"
     Properties:
-      InstanceProfileName: "EC2AccessToESSQSDynamo"
+      InstanceProfileName: "EC2Access"
+      Path: "/"
       Roles:
-        - !Ref MainRole
+        - !Ref RootRole
 Outputs:
   IAMRoleArn:
     Description: The arn for IAM role
-    Value: {"Fn::GetAtt" : ["MainRole", "Arn"] }
+    Value: {"Fn::GetAtt" : ["RootRole", "Arn"] }

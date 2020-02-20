@@ -7,6 +7,7 @@ import com.epam.ekc.search.model.Book;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -30,6 +31,7 @@ public class SQSService {
     }
 
     @SneakyThrows
+    @Scheduled(fixedRate = 1000)
     public Book receiveMessage() {
         try {
             ReceiveMessageRequest request = new ReceiveMessageRequest(queueUrl)

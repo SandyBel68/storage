@@ -33,17 +33,6 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              AWS: "*"
-            Action: 'es:*'
-            Condition:
-              IpAddress:
-                aws:SourceIp:
-                  - "185.44.13.32/29"
-                  - "46.229.218.0/24"
-                  - "5.188.107.104/29"
-            Resource: '*'
-          - Effect: Allow
-            Principal:
               AWS: !Ref IAMRoleArn
             Action: 'es:*'
             Resource: '*'

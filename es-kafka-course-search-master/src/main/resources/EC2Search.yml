@@ -16,7 +16,7 @@ Parameters:
   IAMRole:
     Description: "IAM profile instance"
     Type: String
-    Default: "EC2AccessToESSQSDynamo"
+    Default: "EC2Access"
   EurekaAddress:
     Type: String
   ElasticEndpoint:
