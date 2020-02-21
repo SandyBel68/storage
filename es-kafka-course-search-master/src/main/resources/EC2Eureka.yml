@@ -50,4 +50,4 @@ Resources:
 Outputs:
   EurekaAddress:
     Description: The endpoint of EUREKA service
-    Value: {"Fn::GetAtt": ["Ec2","PublicIp"]}
+    Value: {"Fn::GetAtt": ["Ec2","PrivateIp"]}

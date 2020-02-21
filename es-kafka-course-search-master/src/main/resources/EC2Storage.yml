@@ -55,4 +55,4 @@ Resources:
 Outputs:
   StorageAddress:
     Description: The endpoint of Storage created
-    Value: {"Fn::GetAtt": ["Ec2","PublicIp"]}
+    Value: {"Fn::GetAtt": ["Ec2","PrivateIp"]}

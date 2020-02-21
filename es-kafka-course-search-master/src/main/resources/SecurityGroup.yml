@@ -1,15 +1,25 @@
 AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  Name:
+    Description: Security group name
+    Type: String
+    Default: "myGroup"
 Resources:
-  InstanceSecurityGroup:
+  InstanceSecurityGroup2:
     Type: AWS::EC2::SecurityGroup
     Properties:
+      GroupName: !Ref Name
       GroupDescription: Allows outbound for all addresses and inbound from EPAM SPb network
       VpcId: vpc-9f0196e7
       SecurityGroupIngress:
         - IpProtocol: -1
           FromPort: -1
           ToPort: -1
-          CidrIp: 0.0.0.0/0
+          CidrIp: 46.229.218.0/24
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          SourceSecurityGroupName: !Ref Name
       SecurityGroupEgress:
         - IpProtocol: -1
           FromPort: -1
@@ -18,4 +28,4 @@ Resources:
 Outputs:
   SecurityGroupID:
     Description: The id of security group
-    Value: {"Fn::GetAtt": ["InstanceSecurityGroup","GroupId"]}
+    Value: {"Fn::GetAtt": ["InstanceSecurityGroup2","GroupId"]}
