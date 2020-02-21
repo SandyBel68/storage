@@ -26,8 +26,6 @@ Parameters:
   SecurityGroupId:
     Type: String
 Resources:
-  Eip:
-    Type: AWS::EC2::EIP
   Ec2:
     Type: AWS::EC2::Instance
     Properties:
@@ -55,8 +53,3 @@ Resources:
           - Eureka_Address: !Ref EurekaAddress
             Storage_Address: !Ref StorageAddress
             Es_Address: !Ref ElasticEndpoint
-  EipAssociation:
-    Type: AWS::EC2::EIPAssociation
-    Properties:
-      EIP: !Ref Eip
-      InstanceId: !Ref Ec2

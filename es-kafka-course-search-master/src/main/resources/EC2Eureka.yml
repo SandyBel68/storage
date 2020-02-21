@@ -20,8 +20,6 @@ Parameters:
   SecurityGroupId:
     Type: String
 Resources:
-  Eip:
-    Type: AWS::EC2::EIP
   Ec2:
     Type: AWS::EC2::Instance
     Properties:
@@ -42,11 +40,6 @@ Resources:
           yum install -y docker
           service docker start
           docker container run --rm -p 8761:8761 sandybel68/discoverapp:discovery
-  EipAssociation:
-    Type: AWS::EC2::EIPAssociation
-    Properties:
-      EIP: !Ref Eip
-      InstanceId: !Ref Ec2
 Outputs:
   EurekaAddress:
     Description: The endpoint of EUREKA service
